@@ -1,0 +1,19 @@
+from sklearn.model_selection import GridSearchCV
+from sklearn import metrics
+import matplotlib.pyplot as plt
+tuned_parameters = [{'C': np.linspace(.0001, 1000, 200) ,\ 'penalty': [ "l1", "l2"]}]
+clf = GridSearchCV(regression, tuned_parameters, cv=cross_val,\ scoring= 'roc_auc')
+clf.fit(x_train, y_train)
+print("Best parameters set found on development set:")
+print()
+print(clf.best_params_)
+print("\nOptimized model achieved an ROC of: ", round(clf.score(x_train, y_train), 4))
+proba = clf.predict_proba(x_train)
+# Producing the same false/true positive data via a library and plotting it
+fpr, tpr, _ = metrics.roc_curve(y_train.values,proba[:,1])
+# print(fpr)
+# print(tpr)
+plt.plot(fpr,tpr);
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title("ROC curve for our Logistic Regression Model")
